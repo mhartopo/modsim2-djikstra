@@ -68,7 +68,7 @@ to setup-vertices
     set shape "dot"
     set color black
     set label tentativeCost
-    set label-color red
+
   ]
 end
 
