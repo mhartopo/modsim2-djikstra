@@ -5,7 +5,6 @@ globals [
   initialVertex
   targetVertex
   currentVertex
-
   absentTentativeCost ;; = -1
 ]
 
@@ -115,9 +114,43 @@ to setup-target-vertex
 end
 
 to set-start
+  if mouse-down? [
+    let grabbed min-one-of vertices [distancexy mouse-xcor mouse-ycor]
+
+    ask initialVertex [
+      set tentativeCost -1
+      set visited? false
+      set color black
+    ]
+
+    set initialVertex grabbed
+    ask initialVertex [
+      set tentativeCost 0
+      set visited? true
+      set shape "dot"
+      set color green
+      set label tentativeCost
+    ]
+    set currentVertex initialVertex
+  ]
 end
 
 to set-goal
+  if mouse-down? [
+    let grabbed min-one-of vertices [distancexy mouse-xcor mouse-ycor]
+
+    if (grabbed != initialVertex) [
+      ask targetVertex [
+        set color black
+      ]
+      set targetVertex grabbed
+      ask targetVertex [
+        set shape "dot"
+        set color red
+      ]
+    ]
+  ]
+
 end
 
 to step
@@ -279,7 +312,7 @@ BUTTON
 104
 NIL
 set-start
-NIL
+T
 1
 T
 OBSERVER
@@ -296,7 +329,7 @@ BUTTON
 103
 NIL
 set-goal
-NIL
+T
 1
 T
 OBSERVER
